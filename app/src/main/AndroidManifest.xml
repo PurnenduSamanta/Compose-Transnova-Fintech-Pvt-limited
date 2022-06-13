@@ -14,7 +14,7 @@
         android:theme="@style/Theme.JetPackCompose"
         tools:targetApi="31">
         <activity
-            android:name=".todo.ToDoWithColumn"
+            android:name=".registrationForm.Form"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.JetPackCompose"
@@ -24,6 +24,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.purnendu.compose.todo.toDoWithNavigatingDifferentActivity.ToDoAddTaskPage"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.JetPackCompose"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
