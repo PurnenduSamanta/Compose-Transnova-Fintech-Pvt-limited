@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.purnendu.compose">
 
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,8 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JetPackCompose"
         tools:targetApi="31">
+
         <activity
-            android:name=".registrationForm.Form"
+            android:name=".customUiComponent.TestingComponent"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.JetPackCompose"

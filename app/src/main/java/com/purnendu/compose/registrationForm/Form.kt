@@ -5,22 +5,16 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.purnendu.compose.R
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -262,62 +256,6 @@ class Form : ComponentActivity() {
 
             }
         }
-    }
-
-    @Composable
-    fun CustomTextField(
-        text: String,
-        labelContent: String,
-        keyboardType: KeyboardType,
-        isError: Boolean,
-        errorMessage: String,
-        onValueChange: (String) -> Unit
-    ) {
-
-
-        Column {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                value = text,
-                onValueChange = {
-                    onValueChange(it)
-                },
-                trailingIcon = {
-                    if (isError)
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_baseline_error_24),
-                            "error",
-                            tint = MaterialTheme.colors.error
-                        )
-                },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    backgroundColor = Color.White,
-                    focusedBorderColor = Color.Blue,
-                    unfocusedBorderColor = Color.LightGray,
-                    focusedLabelColor = Color.Black,
-                    textColor = Color.Gray
-                ),
-                shape = RoundedCornerShape(5.dp),
-                isError = isError,
-                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-                label = { Text(text = labelContent) },
-                visualTransformation = if (keyboardType == KeyboardType.Password)
-                    PasswordVisualTransformation()
-                else
-                    VisualTransformation.None
-            )
-            if (isError) {
-                Text(
-                    text = errorMessage,
-                    color = MaterialTheme.colors.error,
-                    style = MaterialTheme.typography.caption,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
-            }
-
-        }
-
     }
 
     private fun validateName(name: String): Boolean = name.length < 20
