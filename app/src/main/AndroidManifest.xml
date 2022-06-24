@@ -18,8 +18,10 @@
         android:theme="@style/Theme.JetPackCompose"
         tools:targetApi="31">
 
+
+        <!-- android:name=".YourActivityNameToLaunch"-->
         <activity
-            android:name=".customUiComponent.TestingComponent"
+            android:name=".customUiComponent.CircularSlider"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.JetPackCompose"
