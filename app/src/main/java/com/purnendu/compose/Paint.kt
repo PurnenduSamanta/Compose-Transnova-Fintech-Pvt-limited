@@ -5,12 +5,16 @@ import android.view.MotionEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Slider
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -19,9 +23,18 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.unit.dp
 
 
-private var paths = mutableListOf<PathState>()
+
+private class PathState(val path: Path, val color: Color, val stroke: Stroke)
+
+
+private val pathList = mutableListOf<PathState>()
+private var action by mutableStateOf<Double?>(null)
+private var color by mutableStateOf(Color.Black)
+private var strokeWidth by mutableStateOf(10f)
+private var path = Path()
 
 class Paint : ComponentActivity() {
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,33 +45,48 @@ class Paint : ComponentActivity() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.SpaceBetween
             ) {
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.1f)
+                        .clip(RoundedCornerShape(bottomEnd = 50.dp, bottomStart = 50.dp))
+                        .background(color = Color.Magenta),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    SingleColor(
+                    SingleSelectedColor(
                         color = Color.Yellow,
-                        //   modifier = Modifier.clickable { pathColor = Color.Yellow }
+                        modifier = Modifier.clickable { color = Color.Yellow }
                     )
-                    SingleColor(
+                    SingleSelectedColor(
                         color = Color.Green,
-                        //  modifier = Modifier.clickable { pathColor = Color.Green }
+                        modifier = Modifier.clickable { color = Color.Green }
                     )
-                    SingleColor(
-                        color = Color.Cyan
-                        //   modifier = Modifier.clickable { pathColor = Color.Cyan }
+                    SingleSelectedColor(
+                        color = Color.Cyan,
+                        modifier = Modifier.clickable { color = Color.Cyan }
+                    )
+                    SingleSelectedColor(
+                        color = Color.White,
+                        modifier = Modifier.clickable {
+                            pathList.clear() //Clearing the list
+                            color=Color.Black// Set default color to black
+                            action = Math.random() //For recomposing the canvas
+                        }
                     )
                 }
-                Spacer(Modifier.height(25.dp))
-                PaintInScreen()
-
-//                Slider(value = pathWidth,
-//                    valueRange = 10f..20f,
-//                    onValueChange = { pathWidth = it })
+                PaintInScreen(
+                    modifier = Modifier
+                        .fillMaxHeight(.9f)
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                )
+                Slider(value = strokeWidth,
+                    valueRange = 10f..20f,
+                    onValueChange = { strokeWidth = it },
+                )
             }
         }
     }
@@ -66,59 +94,67 @@ class Paint : ComponentActivity() {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun PaintInScreen() {
+fun PaintInScreen(modifier: Modifier = Modifier) {
 
-
-    val currentPath = Path()
-    val movePath = remember { mutableStateOf<Offset?>(null) }
-
-
-    Canvas(modifier = Modifier
-        .fillMaxSize()
+    Canvas(modifier = modifier
         .pointerInteropFilter {
+
             when (it.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    currentPath.moveTo(it.x, it.y)
-
+                    path.moveTo(it.x, it.y)
+                    true
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    movePath.value = Offset(it.x, it.y)
+                    action = Math.random()
+                    path.lineTo(it.x, it.y)
+                    true
+                }
+                MotionEvent.ACTION_UP -> {
+                    //Adding path to the list
+                    pathList.add(PathState(path, color, Stroke(width = strokeWidth)))
+                    //Creating new Path object
+                    path = Path()
+                    //Recomposing Canvas
+                    action = Math.random()
+                    true
                 }
                 else -> {
-                    movePath.value = null
+                    false
                 }
             }
-            true
         }
     ) {
-        movePath.value?.let {
-            currentPath.lineTo(it.x, it.y)
+        action?.let {
+
+            //It will draw a path when ACTION_MOVE
             drawPath(
-                path = currentPath,
-                color = Color.Black,
-                style = Stroke(10f)
+                path = path,
+                color = color,
+                style = Stroke(width = strokeWidth)
             )
+
+            //It will draw list of paths when ACTION_UP and override previous path
+            pathList.forEach {
+                drawPath(
+                    path = it.path,
+                    color = it.color,
+                    style = it.stroke
+                )
+
+            }
         }
-        paths.forEach {
-            drawPath(
-                path = it.path,
-                color = it.color,
-                style = Stroke(10f)
-            )
-        }
+
     }
 }
 
 @Composable
-fun SingleColor(color: Color, modifier: Modifier = Modifier) {
+fun SingleSelectedColor(color: Color, modifier: Modifier = Modifier) {
     Canvas(modifier = modifier)
     {
         drawCircle(
-            center = center + Offset(0f, 25f),
+            center = center + Offset(0f, 0f),
             color = color,
             radius = 60f
         )
     }
 }
-
-data class PathState(val path: Path, val color: Color, val stroke: Stroke)
