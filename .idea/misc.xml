@@ -4,7 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Androidproject/JetPackCompose/app/src/main/res/drawable-xxhdpi/ic_bell.xml" value="0.106" />
+        <entry key="..\:/Androidproject/JetPackCompose/app/src/main/res/drawable-xxhdpi/ic_grid.xml" value="0.111" />
+        <entry key="..\:/Androidproject/JetPackCompose/app/src/main/res/drawable-xxhdpi/ic_igtv.xml" value="0.111" />
+        <entry key="..\:/Androidproject/JetPackCompose/app/src/main/res/drawable-xxhdpi/ic_menu.xml" value="0.188" />
         <entry key="..\:/Androidproject/JetPackCompose/app/src/main/res/drawable-xxhdpi/ic_reels.xml" value="0.106" />
+        <entry key="..\:/Androidproject/JetPackCompose/app/src/main/res/drawable-xxhdpi/ic_vidiocam.xml" value="0.111" />
+        <entry key="..\:/Androidproject/JetPackCompose/app/src/main/res/drawable/ic_baseline_error_24.xml" value="0.111" />
+        <entry key="..\:/Androidproject/JetPackCompose/app/src/main/res/drawable/ic_launcher_background.xml" value="0.111" />
         <entry key="..\:/Androidproject/JetPackCompose/app/src/main/res/font/font.xml" value="0.1685185185185185" />
       </map>
     </option>
