@@ -1,5 +1,5 @@
 # With-JetpackCompose
-Individual short projects on Compose
+Individual short project on Compose
 
 To run a particular Activity just change the full path name of the Activity in manifest file be like:
 if you want to run RotatoryWheel then in between Activity tag just change the name as  android:name=".customUiComponent.RotatoryWheel"
